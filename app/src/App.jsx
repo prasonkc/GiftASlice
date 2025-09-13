@@ -17,7 +17,7 @@ function App() {
           </h3>
           <div className="mt-8">
             <Button text="Donate Now" />
-          </div>
+         </div>
         </div>
       </section>
     </>
