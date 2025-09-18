@@ -6,8 +6,10 @@ const Navbar = () => {
   return (
     <>
       <nav className="bg-[#0F172A] text-[#E2E8F0] px-6 py-4 flex items-center justify-between">
-        {/* Left Icon */}
-        <div className="text-xl font-bold">Icon</div>
+        <Link to="/">
+          {/* Left Icon */}
+          <div className="text-xl font-bold">Icon</div>
+        </Link>
 
         {/*Right Panel  */}
         <div className="flex items-center gap-6">

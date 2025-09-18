@@ -4,7 +4,7 @@ const SignUp = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0F172A]">
       <form className="bg-[#1E293B] p-8 rounded-2xl shadow-lg w-full max-w-md flex flex-col gap-6">
-        <h2 className="text-2xl font-bold text-[#E2E8F0] text-center">SignUp</h2>
+        <h2 className="text-2xl font-bold text-[#E2E8F0] text-center">Sign Up</h2>
 
         {/* Name Input */}
         <input
