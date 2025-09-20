@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button";
-
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -14,7 +14,9 @@ const Home = () => {
           think.
         </h3>
         <div className="mt-8">
-          <Button text="Donate Now" />
+          <Link to="/donate">
+            <Button text="Donate Now" />
+          </Link>
         </div>
       </div>
     </section>
