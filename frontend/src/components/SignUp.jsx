@@ -1,10 +1,35 @@
 import React from "react";
 
 const SignUp = () => {
+  const [name, setName] = useState("");
+  const [dob, setDob] = useState("");
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  function handleClick() {
+    fetch("http://localhost:4000/signup", {
+      method: "POST",
+      headers: { "content-type": "application.json" },
+
+      // Send data to server
+      body: JSON.stringify({
+        name: name,
+        dob: dob,
+        username: username,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Data Saved" + JSON.stringify(data));
+      })
+      .catch((e) => console.log(e));
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#0F172A]">
       <form className="bg-[#1E293B] p-8 rounded-2xl shadow-lg w-full max-w-md flex flex-col gap-6">
-        <h2 className="text-2xl font-bold text-[#E2E8F0] text-center">Sign Up</h2>
+        <h2 className="text-2xl font-bold text-[#E2E8F0] text-center">
+          Sign Up
+        </h2>
 
         {/* Name Input */}
         <input
@@ -13,6 +38,7 @@ const SignUp = () => {
           id="name"
           placeholder="Full Name"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
+          onChange={(e) => setName(e.target.value)}
         />
 
         {/* Date of Birth Input */}
@@ -22,6 +48,7 @@ const SignUp = () => {
           id="dob"
           placeholder="Date of Birth"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
+          onChange={(e) => setDob(e.target.value)}
         />
 
         {/* Email Input */}
@@ -31,6 +58,7 @@ const SignUp = () => {
           id="email"
           placeholder="Email"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
+          onChange={(e) => setUserName(e.target.value)}
         />
 
         {/* Password Input */}
@@ -40,6 +68,7 @@ const SignUp = () => {
           id="password"
           placeholder="Password"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
+          onChange={(e) => setPassword(e.target.value)}
         />
 
         {/* Confirm Password Input */}
@@ -54,9 +83,10 @@ const SignUp = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full py-3 bg-[#38BDF8] hover:bg-[#0EA5E9] text-[#0F172A] font-semibold rounded-lg shadow-md transition-colors"
+          className="w-full py-3 bg-[#38BDF8] hover:bg-[#0EA5E9] text-[#0F172A] font-semibold rounded-lg shadow-md transition-colors hover: cursor-pointer"
+          onClick={handleClick}
         >
-          Log In
+          Sign Up
         </button>
       </form>
     </div>

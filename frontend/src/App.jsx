@@ -20,7 +20,7 @@ function App() {
   return (
     <>
       <Navbar />
-
+      
       {/* Routing Components */}
       <Routes>
         <Route path="/" element={<Home />} />
