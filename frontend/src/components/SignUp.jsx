@@ -1,26 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
-  const [username, setUserName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  function handleClick() {
+  function handleClick(e) {
+    e.preventDefault()
     fetch("http://localhost:4000/signup", {
       method: "POST",
-      headers: { "content-type": "application.json" },
+      headers: { "Content-Type": "application/json" },
 
       // Send data to server
       body: JSON.stringify({
         name: name,
         dob: dob,
-        username: username,
+        email: email,
         password: password,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Data Saved" + JSON.stringify(data));
+        console.log(JSON.stringify(data));
       })
       .catch((e) => console.log(e));
   }
@@ -58,7 +60,7 @@ const SignUp = () => {
           id="email"
           placeholder="Email"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
-          onChange={(e) => setUserName(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
 
         {/* Password Input */}
