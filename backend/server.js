@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const Userbase = require("./userbase");
+const bcrypt = require("bcrypt")
 
 const app = express();
 const PORT = 4000;
@@ -29,12 +30,15 @@ app.get("/", (req, res) => {
   res.json({ Message: "Backend Reachable" });
 });
 
+// Signup route
 app.post("/signup", async (req, res) => {
   try {
     console.log("Post Request initiated");
     const { name, dob, email, password } = req.body;
 
-    const databaseObject = new Userbase({ name, dob, email, password });
+    // Hash the password and save
+    const hashedPassword = await bcrypt.hash(password, 11)
+    const databaseObject = new Userbase({ name, dob, email, password: hashedPassword });
     await databaseObject.save();
 
     res.json({ message: "Registration successful" });
@@ -46,6 +50,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// Login Route
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -55,11 +60,14 @@ app.post("/login", async (req, res) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  // Check password
-  if (user.password !== password) {
-    return res.status(401).json({ message: "Incorrect password" });
-  }
-  res.json({ message: "Login successful" }).catch((e) => {
+  // Check password by matching user password to hashed password
+  const isMatch = await bcrypt.compare(password, user.password)
+  if (!isMatch) return res.status(401).json({ message: "Invalid password" });
+
+  // Redirect the login
+  try {
+    res.json({ message: "Login successful" });
+  } catch (e) {
     console.log(e);
-  });
+  }
 });
