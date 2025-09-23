@@ -62,10 +62,7 @@ const SignUp = () => {
           placeholder="Date of Birth"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
           onChange={(e) => {
-            // Get the raw date and change its format
-            const raw = e.target.value;
-            const date = new Date(raw).toLocaleDateString("en-GB");
-            setDob(date);
+            setDob(e.target.value);
           }}
         />
 
@@ -103,9 +100,7 @@ const SignUp = () => {
 
         {/* Confirm Password Tooltip */}
         {!passwordMatch && (
-          <div
-            className="bg-red-600 text-white text-sm px-3 py-1 rounded shadow-lg pointer-events-none text-center"
-          >
+          <div className="bg-red-600 text-white text-sm px-3 py-1 rounded shadow-lg pointer-events-none text-center">
             Passwords don’t match
           </div>
         )}

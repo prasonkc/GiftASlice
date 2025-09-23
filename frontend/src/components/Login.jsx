@@ -8,6 +8,8 @@ const Login = () => {
     fetch("http://localhost:4000/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      // Send the cookies to the server
+      credentials: "include",
       body: JSON.stringify({
         email: email,
         password: password,
