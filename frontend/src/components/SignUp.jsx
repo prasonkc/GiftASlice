@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 
-
 const SignUp = () => {
+  // Variable value states
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
+
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
   function handleClick(e) {
-    e.preventDefault()
-    if(password != confirmedPassword) {
-      console.log("Password doesnt match")
-      return
+    e.preventDefault();
+    if (password != confirmedPassword) {
+      setPasswordMatch(false);
+      console.log("Password doesnt match");
+      return;
     }
 
+    setPasswordMatch(true);
     fetch("http://localhost:4000/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -58,9 +63,9 @@ const SignUp = () => {
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
           onChange={(e) => {
             // Get the raw date and change its format
-            const raw = e.target.value
-            const date = new Date(raw).toLocaleDateString("en-GB")
-            setDob(date)
+            const raw = e.target.value;
+            const date = new Date(raw).toLocaleDateString("en-GB");
+            setDob(date);
           }}
         />
 
@@ -91,8 +96,19 @@ const SignUp = () => {
           id="confirm-password"
           placeholder="Confirm Password"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
-          onChange={(e) => {setConfirmedPassword(e.target.value)}}
+          onChange={(e) => {
+            setConfirmedPassword(e.target.value);
+          }}
         />
+
+        {/* Confirm Password Tooltip */}
+        {!passwordMatch && (
+          <div
+            className="bg-red-600 text-white text-sm px-3 py-1 rounded shadow-lg pointer-events-none text-center"
+          >
+            Passwords don’t match
+          </div>
+        )}
 
         {/* Submit Button */}
         <button

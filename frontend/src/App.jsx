@@ -8,6 +8,7 @@ import Donate from "./components/Donate";
 import { useEffect } from "react";
 
 function App() {
+  
   useEffect(() => {
     fetch("http://localhost:4000/")
       .then((response) => response.json())
