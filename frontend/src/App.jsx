@@ -5,20 +5,26 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import { Routes, Route, data } from "react-router-dom";
 import Donate from "./components/Donate";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  
+  const [user, setUser] = useState("");
+
   useEffect(() => {
-    fetch("http://localhost:4000/")
+    fetch("http://localhost:4000/", {
+      // Recieve cookies from the server
+      credentials: "include"
+    })
       .then((response) => response.json())
       .then((data) => {
         console.log(JSON.stringify(data));
+        setUser(data.userId)
       })
       .catch((e) => console.log(e));
-  }, []);
-
-  return (
+    }, []);
+    
+    console.log("User: " + user)
+    return (
     <>
       <Navbar />
       
