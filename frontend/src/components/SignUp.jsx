@@ -6,8 +6,14 @@ const SignUp = () => {
   const [dob, setDob] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmedPassword, setConfirmedPassword] = useState("");
   function handleClick(e) {
     e.preventDefault()
+    if(password != confirmedPassword) {
+      console.log("Password doesnt match")
+      return
+    }
+
     fetch("http://localhost:4000/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -50,7 +56,12 @@ const SignUp = () => {
           id="dob"
           placeholder="Date of Birth"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
-          onChange={(e) => setDob(e.target.value)}
+          onChange={(e) => {
+            // Get the raw date and change its format
+            const raw = e.target.value
+            const date = new Date(raw).toLocaleDateString("en-GB")
+            setDob(date)
+          }}
         />
 
         {/* Email Input */}
@@ -80,6 +91,7 @@ const SignUp = () => {
           id="confirm-password"
           placeholder="Confirm Password"
           className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
+          onChange={(e) => {setConfirmedPassword(e.target.value)}}
         />
 
         {/* Submit Button */}
