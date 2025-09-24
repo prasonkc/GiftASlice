@@ -37,7 +37,7 @@ const SignUp = ({setLoggedIn, setUser}) => {
         // Set the login status and user after getting data from server
         if(data.userId){
           setLoggedIn(true)
-          setUser(userId)
+          setUser(data.userName)
         }
       })
       .catch((e) => console.log(e));
