@@ -9,30 +9,28 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [user, setUser] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
+  // retrieve the session status
   useEffect(() => {
-    fetch("http://localhost:4000/", {
-      // Recieve cookies from the server
-      credentials: "include"
+    fetch("http://localhost:4000/session", {
+      credentials: "include",
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(JSON.stringify(data));
-        setUser(data.userId)
-      })
-      .catch((e) => console.log(e));
-    }, []);
+      .then((res) => res.json())
+      .then((data) => setLoggedIn(data.loggedIn))
+      .catch(() => setLoggedIn(false));
+  }, []);
+
     
-    console.log("User: " + user)
     return (
     <>
-      <Navbar />
+      <Navbar user={user} loggedIn={loggedIn}/>
       
       {/* Routing Components */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setUser={setUser}/>} />
+        <Route path="/signup" element={<SignUp setLoggedIn={setLoggedIn} setUser={setUser}/>} />
         <Route path="/donate" element={<Donate />} />
       </Routes>
     </>
