@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
-const Login = () => {
+const Login = ({setLoggedIn, setUser}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   function handleClick(e) {
     e.preventDefault();
     fetch("http://localhost:4000/login", {
@@ -18,6 +19,11 @@ const Login = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        // Set user after getting the response from server
+        if(data.userId){
+          setLoggedIn(true)
+          setUser(data.userId)
+        }
       })
       .catch((err) => {
         console.log(err);
