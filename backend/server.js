@@ -11,6 +11,7 @@ const PORT = 4000;
 // Middleware declaration
 app.use(
   cors({
+    // Send and recieve cookies from frontend at port 5173
     origin: "http://localhost:5173",
     credentials: true,
   })
@@ -26,7 +27,7 @@ app.use(
     saveUninitialized: false, //Only save session if it is modified
     cookie: {
       secure: false, // False for http request and true for https request
-      sameSite: "lax",
+      sameSite: "lax", // Lax for frontend and backend on localhost on different ports
       httpOnly: true,
     },
   })
@@ -75,7 +76,10 @@ app.post("/signup", async (req, res) => {
     });
     await databaseObject.save();
 
-    res.json({ message: "Registration successful" });
+    // Store id in session
+    req.session.userId = user._id;
+    
+    res.json({ message: "Registration successful", userId: req.session.userId });
   } catch (err) {
     console.error(err);
     res
@@ -100,20 +104,23 @@ app.post("/login", async (req, res) => {
 
   // Store id in session
   req.session.userId = user._id;
+  req.session.userName = user.name;
 
   // Redirect the login
   try {
-    res.json({ message: "Login successful" });
+    res.json({ message: "Login successful", userId: req.session.userId, userName: req.session.userName});
   } catch (e) {
     console.log(e);
   }
 });
 
-app.get("/check-session", (req, res) => {
-  if(req.session.userId) {
-    res.json({ loggedIn: true, userId: req.session.userId });
+// Send whether session is established or not
+app.get("/session", (req, res) => {
+  if (req.session.userId) {
+    res.json({ loggedIn: true, userId: req.session.userId, userName: req.session.userName });
   } else {
     res.json({ loggedIn: false });
   }
 });
 
+// 
