@@ -22,7 +22,7 @@ const Login = ({setLoggedIn, setUser}) => {
         // Set user after getting the response from server
         if(data.userId){
           setLoggedIn(true)
-          setUser(data.userId)
+          setUser(data.userName)
         }
       })
       .catch((err) => {

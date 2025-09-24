@@ -17,7 +17,12 @@ function App() {
       credentials: "include",
     })
       .then((res) => res.json())
-      .then((data) => setLoggedIn(data.loggedIn))
+      .then((data) => {
+        if(data.userId){
+          setLoggedIn(data.loggedIn)
+          setUser(data.userName)
+        }
+      })
       .catch(() => setLoggedIn(false));
   }, []);
 

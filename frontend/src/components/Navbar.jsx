@@ -35,6 +35,20 @@ const Navbar = ({ loggedIn, user }) => {
               </button>
             </Link>
           )}
+
+          {/* User Panel */}
+          {loggedIn && (
+            <div className="flex items-center gap-3 p-3 bg-[#1E293B] rounded-xl shadow-lg cursor-pointer">
+              {/* Avatar */}
+              <div className="w-10 h-10 rounded-full bg-[#38BDF8] flex items-center justify-center text-[#0F172A] font-bold">
+                {user?.charAt(0).toUpperCase()}
+                {user?.charAt(1).toUpperCase()}
+              </div>
+
+              {/* Username */}
+              {/* <div className="text-[#E2E8F0] font-medium">{user}</div> */}
+            </div>
+          )}
         </div>
       </nav>
     </>
