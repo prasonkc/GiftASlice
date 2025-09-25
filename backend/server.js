@@ -78,8 +78,11 @@ app.post("/signup", async (req, res) => {
 
     // Store id in session
     req.session.userId = user._id;
-    
-    res.json({ message: "Registration successful", userId: req.session.userId });
+
+    res.json({
+      message: "Registration successful",
+      userId: req.session.userId,
+    });
   } catch (err) {
     console.error(err);
     res
@@ -108,7 +111,11 @@ app.post("/login", async (req, res) => {
 
   // Redirect the login
   try {
-    res.json({ message: "Login successful", userId: req.session.userId, userName: req.session.userName});
+    res.json({
+      message: "Login successful",
+      userId: req.session.userId,
+      userName: req.session.userName,
+    });
   } catch (e) {
     console.log(e);
   }
@@ -117,7 +124,11 @@ app.post("/login", async (req, res) => {
 // Send whether session is established or not
 app.get("/session", (req, res) => {
   if (req.session.userId) {
-    res.json({ loggedIn: true, userId: req.session.userId, userName: req.session.userName });
+    res.json({
+      loggedIn: true,
+      userId: req.session.userId,
+      userName: req.session.userName,
+    });
   } else {
     res.json({ loggedIn: false });
   }
@@ -126,15 +137,19 @@ app.get("/session", (req, res) => {
 // Logout the user
 app.post("/logout", (req, res) => {
   // Destroy the session if session exists
-  if(req.session){
-    req.session.destroy(() => {
-      res.status(200).send("Logout Successful");
-      // Clear cookie on logout
-      res.clearCookie('connect.sid'); 
-    }).catch((e) => {
-      console.log(e);
-    })
-  } else{
-    res.status(400).send("No active session found")
+  if (req.session) {
+    req.session.destroy((err) => {
+        if (err) {
+          console.error(err);
+          return res
+            .status(500)
+            .json({ success: false, error: "Session destruction failed" });
+        }
+        // Clear cookie on logout
+        res.clearCookie("connect.sid");
+        res.status(200).json({ success: true });
+      })
+  } else {
+    res.status(400).send({ success: false });
   }
-})
+});
