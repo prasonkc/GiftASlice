@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [user, setUser] = useState("");
+  const [userId, setUserId] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   // retrieve the session status
@@ -19,12 +20,14 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if(data.userId){
+          setUserId(null)
           setLoggedIn(data.loggedIn)
           setUser(data.userName)
         }
       })
       .catch(() => setLoggedIn(false));
   }, []);
+
 
     
     return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const SignUp = ({setLoggedIn, setUser}) => {
+const SignUp = ({ setLoggedIn, setUser }) => {
   // Variable value states
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
@@ -35,9 +35,10 @@ const SignUp = ({setLoggedIn, setUser}) => {
       .then((data) => {
         console.log(JSON.stringify(data));
         // Set the login status and user after getting data from server
-        if(data.userId){
+        if (data.userId) {
           setLoggedIn(true)
           setUser(data.userName)
+          window.location.href = "/";
         }
       })
       .catch((e) => console.log(e));

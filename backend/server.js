@@ -123,4 +123,18 @@ app.get("/session", (req, res) => {
   }
 });
 
-// 
+// Logout the user
+app.post("/logout", (req, res) => {
+  // Destroy the session if session exists
+  if(req.session){
+    req.session.destroy(() => {
+      res.status(200).send("Logout Successful");
+      // Clear cookie on logout
+      res.clearCookie('connect.sid'); 
+    }).catch((e) => {
+      console.log(e);
+    })
+  } else{
+    res.status(400).send("No active session found")
+  }
+})
