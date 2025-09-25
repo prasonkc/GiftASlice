@@ -23,6 +23,7 @@ const Login = ({setLoggedIn, setUser}) => {
         if(data.userId){
           setLoggedIn(true)
           setUser(data.userName)
+          window.location.href = "/";
         }
       })
       .catch((err) => {
