@@ -11,6 +11,17 @@ const Navbar = ({ loggedIn, user }) => {
         setUserClick(!userClick);
   }
 
+  function handleLogout(){
+    fetch("http://localhost:4000/logout", {
+      method: "POST", 
+      headers: {"Content-Type": "application/json"},
+      credentials: "include",
+    }).then(res => res.json())
+    .then((data) => {
+      if(data.success){window.location.href="/login"}
+    }).catch((e) => {console.log(e)})
+  }
+
   // Close the user panel if it is open
    useEffect(() => {
     function handleClickOutside(event) {
@@ -78,7 +89,7 @@ const Navbar = ({ loggedIn, user }) => {
                 <div className="absolute top-14 flex flex-col bg-[#2d3852] rounded-xl shadow-lg w-36 text-center">
                   <ul className="flex flex-col text-[#E2E8F0] font-medium">
                     <li className="hover:bg-[#1E293B] py-3 rounded">{user}</li>
-                    <li className="hover:bg-[#1E293B] py-3 rounded">Logout</li>
+                    <li className="hover:bg-[#1E293B] py-3 rounded" onClick={handleLogout}>Logout</li>
                   </ul>
                 </div>
               )}
