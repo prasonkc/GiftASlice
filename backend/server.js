@@ -77,7 +77,7 @@ app.post("/signup", async (req, res) => {
     await databaseObject.save();
 
     // Store id in session
-    req.session.userId = user._id;
+    req.session.userId = databaseObject._id;
 
     res.json({
       message: "Registration successful",
