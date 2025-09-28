@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+//-------------------------import starts 
+import React, { useState } from "react";
 import {
   Elements,
   CardElement,
@@ -7,6 +7,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+//--------------------this is still import till here------------------------------------//
 
 // Create a promise for stripe checkout
 
@@ -26,6 +27,9 @@ const CheckoutForm = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
+  const [amount, setAmount] = useState(1000);
+
+
   // const options = {
   //   mode: "payment",
   //   amount: 1000,
@@ -41,21 +45,22 @@ const CheckoutForm = () => {
     }
 
     // Create Backend to create payment Intent
-    const res = await fetch("http://localhost:4000/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 1000 }),
-    });
+  const res = await fetch("http://localhost:4000/create-payment-intent", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ amount: amount }), // $10
+  });
 
-    // Wait for processing
+
+    // Wait for processing and get the clientsecret from backend
     const { clientSecret } = await res.json();
 
     // Confirm the payment
     const cardElement = elements.getElement(CardElement);
-    const { paymentIntent, error } = await stripe.confirmCardPayment(
-      clientSecret,
-      { payment_method: { card: cardElement } }
-    );
+
+  const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+    payment_method: { card: cardElement }
+  });
 
     // Handle Errors
     if (error) {
@@ -71,16 +76,41 @@ const CheckoutForm = () => {
       onSubmit={handlePayment}
       className="bg-[#1E293B] p-8 rounded-2xl shadow-lg w-full max-w-md flex flex-col gap-6"
     >
-      {" "}
       <h2 className="text-2xl font-bold text-[#E2E8F0] text-center">
         Donate Now
-      </h2>{" "}
+      </h2>
+
+      {/* Custom Amount Input */}
+    <input
+      type="number"
+      min="1"
+      value={amount / 100} // display in dollars
+      onChange={(e) => setAmount(Math.round(e.target.value * 100))} // store in cents
+      placeholder="Enter donation amount ($)"
+      className="p-4 border border-gray-600 rounded-lg bg-[#0F172A] text-[#E2E8F0]"
+    />
+
       {/* Stripe Card Input */}{" "}
-      <CardElement className="p-4 border border-gray-600 rounded-lg bg-[#0F172A] text-[#E2E8F0]" />{" "}
+      <CardElement className="p-4 border border-gray-600 rounded-lg bg-[#0F172A]"
+        options={{
+          style: {
+            base: {
+              color: "#E2E8F0",
+              "::placeholder": {
+                color: "#FFFFFF",
+              },
+              fontSize: "16px",
+            },
+            invalid: {
+              color: "#F87171",
+            },
+          },
+        }}
+      />
       <button
         type="submit"
         disabled={!stripe || loading}
-        className="w-full py-3 bg-[#38BDF8] hover:bg-[#0EA5E9] text-[#0F172A] font-semibold rounded-lg shadow-md transition-colors"
+        className="w-full py-3 bg-[#38BDF8] hover:bg-[#0EA5E9] font-semibold rounded-lg shadow-md transition-colors cursor-pointer"
       >
         {" "}
         {loading ? "Processing..." : "Donate Now"}{" "}
