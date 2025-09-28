@@ -13,8 +13,11 @@ import { loadStripe } from "@stripe/stripe-js";
 
 // Make sure to call `loadStripe` outside of a component's render to avoid
 // recreating the `Stripe` object on every render.
+
+const clientKey = ""
+
 const stripePromise = loadStripe(
-  "pk_test_51SCKUTIvJKEzgucGbD0QWuvfwCjx1qA0bmbHe0apw4mwDBRqP1wDRvsNVJFAoKif08PxHVXRdxScjyjp1ZpjATjw00SYOru3bk"
+  clientKey //Change it to client key
 );
 
 const CheckoutForm = () => {
