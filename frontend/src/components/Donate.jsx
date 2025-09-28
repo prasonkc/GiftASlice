@@ -16,7 +16,7 @@ const stripePromise = loadStripe(
   "pk_test_51SCKUTIvJKEzgucGbD0QWuvfwCjx1qA0bmbHe0apw4mwDBRqP1wDRvsNVJFAoKif08PxHVXRdxScjyjp1ZpjATjw00SYOru3bk"
 );
 
-const Donate = () => {
+const CheckoutForm = () => {
   // Create an instance of Stripe
   const stripe = useStripe();
 
@@ -26,11 +26,11 @@ const Donate = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
-  const options = {
-    mode: "payment",
-    amount: 1000,
-    currency: "usd",
-  };
+  // const options = {
+  //   mode: "payment",
+  //   amount: 1000,
+  //   currency: "usd",
+  // };
 
   const handlePayment = async (e) => {
     e.preventDefault();
@@ -65,54 +65,38 @@ const Donate = () => {
     }
     setLoading(false);
   };
-  
+
   return (
-    <div>
-      <div className="min-h-screen flex items-center justify-center bg-[#0F172A]">
-        <form className="bg-[#1E293B] p-8 rounded-2xl shadow-lg w-full max-w-md flex flex-col gap-6">
-          <h2 className="text-2xl font-bold text-[#E2E8F0] text-center">
-            Donate Now
-          </h2>
-
-          {/* Card Number Input */}
-          <input
-            type="text"
-            name="card-number"
-            id="card-number"
-            placeholder="Credit Card Number"
-            className="w-full px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
-          />
-          <div className="flex gap-10">
-            {/*  Expiry date*/}
-            <input
-              type="text"
-              name="card-expiry-date"
-              id="card-expiry-date"
-              placeholder="Expiry Date"
-              className="w-2/3 px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
-            />
-            {/*  CVV */}
-            <input
-              type="text"
-              name="card-cvv"
-              id="card-cvv"
-              placeholder="CVV"
-              className="w-1/3 px-4 py-3 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-[#38BDF8] focus:border-[#38BDF8] bg-[#0F172A] text-[#E2E8F0] placeholder-gray-400"
-            />
-          </div>
-
-          {/* Button */}
-          <button
-            type="submit"
-            className="w-full py-3 bg-[#38BDF8] hover:bg-[#0EA5E9] text-[#0F172A] font-semibold rounded-lg shadow-md transition-colors hover:cursor-pointer"
-            onClick={handlePayment}
-          >
-            Donate Now
-          </button>
-        </form>
-      </div>
-    </div>
+    <form
+      onSubmit={handlePayment}
+      className="bg-[#1E293B] p-8 rounded-2xl shadow-lg w-full max-w-md flex flex-col gap-6"
+    >
+      {" "}
+      <h2 className="text-2xl font-bold text-[#E2E8F0] text-center">
+        Donate Now
+      </h2>{" "}
+      {/* Stripe Card Input */}{" "}
+      <CardElement className="p-4 border border-gray-600 rounded-lg bg-[#0F172A] text-[#E2E8F0]" />{" "}
+      <button
+        type="submit"
+        disabled={!stripe || loading}
+        className="w-full py-3 bg-[#38BDF8] hover:bg-[#0EA5E9] text-[#0F172A] font-semibold rounded-lg shadow-md transition-colors"
+      >
+        {" "}
+        {loading ? "Processing..." : "Donate Now"}{" "}
+      </button>{" "}
+      {message && <p className="text-center text-white">{message}</p>}{" "}
+    </form>
   );
 };
 
+const Donate = () => (
+  <div className="min-h-screen flex items-center justify-center bg-[#0F172A]">
+    {" "}
+    <Elements stripe={stripePromise}>
+      {" "}
+      <CheckoutForm />{" "}
+    </Elements>{" "}
+  </div>
+);
 export default Donate;
