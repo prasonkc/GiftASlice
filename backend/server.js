@@ -2,8 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authroutes");
-const session = require("express-session");
 const paymentRoutes = require("./routes/paymentroutes")
+const session = require("express-session");
 
 const app = express();
 const PORT = 4000;
@@ -37,7 +37,7 @@ app.use(
 app.use(authRoutes);
 
 // Payment routes
-app.use(paymentRoutes)
+app.use(paymentRoutes);
 
 // Connect to database
 const dbURI = "mongodb://localhost:27017/DonationSite";
