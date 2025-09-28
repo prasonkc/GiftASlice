@@ -27,8 +27,6 @@ function App() {
       })
       .catch(() => setLoggedIn(false));
   }, []);
-
-
     
     return (
     <>
